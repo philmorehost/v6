@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <!-- Favicons -->
+    <link href="../assets-2/img/favicon.png" rel="icon">
+    <link href="../assets-2/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link
+        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="../assets-2/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets-2/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="../assets-2/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="../assets-2/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="../assets-2/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="../assets-2/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="../assets-2/vendor/simple-datatables/style.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="../assets-2/css/style.css" rel="stylesheet">
+
+    <script src="https://merchant.beewave.ng/checkout.min.js"></script>
+    <script type="text/javascript" src="https://sdk.monnify.com/plugin/monnify.js"></script>
+    <script src="https://checkout.flutterwave.com/v3.js"></script>
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+</head>
+
+<body>
+    <div id="gateway-div" class="d-flex justify-content-center align-items-center br-2"
+        style="visibility: hidden; height: 100vh;">
+        <div id="gateway-div" class="p-4 bg-light text-center rounded border border-1 border-success shadow">
+            <h4 class="fs-4 fw-semibold fst-italic text-success">Payment Completed?</h4>
+            <p class="fs-6 fst-italic">
+                Kindly use press the <strong>Back Button</strong> to return to the previous page
+            </p>
+        </div>
+    </div>
+    <script>
+        const getUrl = window.location.search;
+        const getParams = new URLSearchParams(getUrl);
+
+        const gatewayName = getParams.get("gateway");
+        const gatewayPkey = getParams.get("pkey");
+        const gatewaySkey = getParams.get("skey");
+        const gatewayEkey = getParams.get("ekey");
+        const fullname = getParams.get("fullname");
+        const username = getParams.get("username");
+        const email = getParams.get("email");
+        const phone = getParams.get("phone");
+        const amount = getParams.get("amount");
+        const transactionRef = "funding_" + Math.random().toString(16).slice(2) + Math.random().toString(16).slice(2);
+        if (gatewayName == "beewave.ng") {
+            BeefinanceCheckout.open({
+                accessKey: gatewayPkey,
+                name: fullname,
+                email: email,
+                phone: phone,
+                amount: amount,
+                onclose: function () {
+                    // if user closes checkout without paying
+                    document.getElementById("gateway-div").style.visibility = "visible";
+                }
+            });
+        }
+
+        if (gatewayName == "flutterwave.com") {
+            FlutterwaveCheckout({
+                public_key: gatewayPkey,
+                tx_ref: transactionRef,
+                amount: amount,
+                currency: "NGN",
+                payment_options: "card, banktransfer, ussd",
+                redirect_url: "",
+                meta: {
+                    consumer_id: "",
+                    consumer_mac: "",
+                },
+                customer: {
+                    email: email,
+                    phone_number: email,
+                    name: fullname,
+                },
+                customizations: {
+                    title: "",
+                    description: "",
+                    logo: "",
+                },
+                callback: function (payment) {
+                    // window.location.href = "/web/Dashboard.php";
+                    document.getElementById("gateway-div").style.visibility = "visible";
+                },
+                onclose: function (){
+                    document.getElementById("gateway-div").style.visibility = "visible";
+                }
+            });
+        }
+
+        if (gatewayName == "monnify.com") {
+            MonnifySDK.initialize({
+                amount: amount,
+                currency: "NGN",
+                reference: transactionRef,
+                customerFullName: fullname,
+                customerEmail: email,
+                apiKey: gatewayPkey,
+                contractCode: gatewayEkey,
+                paymentDescription: "Wallet Funding",
+                metadata: {
+                    "name": "",
+                    "age": ""
+                },
+                incomeSplitConfig: [],
+                onLoadStart: () => {
+                    console.log("loading has started");
+                },
+                onLoadComplete: () => {
+                    console.log("SDK is UP");
+                },
+                onComplete: function (response) {
+                    //Implement what happens when the transaction is completed.
+                    // window.location.href = "/web/Dashboard.php";
+                    document.getElementById("gateway-div").style.visibility = "visible";
+                },
+                onClose: function (data) {
+                    //Implement what should happen when the modal is closed here
+                    //window.location.href = "/web/Dashboard.php";
+                    document.getElementById("gateway-div").style.visibility = "visible";
+                }
+            });
+        }
+
+        if (gatewayName == "paystack.com") {
+            let handler = PaystackPop.setup({
+                key: gatewayPkey, // Replace with your public key
+                email: email,
+                amount: amount * 100,
+                currency: 'NGN', // Use GHS for Ghana Cedis or USD for US Dollars
+                ref: transactionRef, // Replace with a reference you generated
+
+                // label: "Optional string that replaces customer email"
+                onClose: function () {
+                    //window.location.href = "/web/Dashboard.php";
+                    document.getElementById("gateway-div").style.visibility = "visible";
+                },
+                callback: function (response) {
+                    // window.location.href = "/web/Dashboard.php";
+                    document.getElementById("gateway-div").style.visibility = "visible";
+                }
+            });
+            handler.openIframe();
+        }
+    </script>
+</body>
+
+</html>
