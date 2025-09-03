@@ -43,132 +43,144 @@ if($account_level_table_name_arrays[$get_logged_user_details["account_level"]] =
     }
 }
 ?>
-<?php include 'header.php'; ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buy Cable TV</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+    <?php include 'header.php'; ?>
 
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Buy Cable TV Subscription</h1>
-</div>
-
-<?php if (isset($_SESSION["product_purchase_response"])): ?>
-    <div class="alert alert-info" role="alert">
-        <?php echo $_SESSION["product_purchase_response"]; ?>
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Buy Cable TV Subscription</h1>
     </div>
-    <?php unset($_SESSION["product_purchase_response"]); ?>
-<?php endif; ?>
 
-<div class="row">
-    <div class="col-lg-6">
-        <?php if (!isset($_SESSION["cable_name"])): ?>
-            <div class="card">
-                <div class="card-header">
-                    Step 1: Verify Decoder IUC
-                </div>
-                <div class="card-body">
-                    <form action="cable-logic.php" method="POST">
-                        <div class="mb-3">
-                            <label for="provider" class="form-label">Cable Provider</label>
-                            <select class="form-select" id="provider" name="provider" required>
-                                <option value="">Select Provider</option>
-                                <option value="dstv">DSTV</option>
-                                <option value="gotv">GOTV</option>
-                                <option value="startimes">Startimes</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="iuc" class="form-label">IUC Number</label>
-                            <input type="text" class="form-control" id="iuc" name="iuc" placeholder="Enter IUC number" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="package" class="form-label">Package</label>
-                            <select class="form-select" id="package" name="package" required>
-                                <option value="">Select a package</option>
-                            </select>
-                        </div>
-                        <button type="submit" name="verify-cable" class="btn btn-primary w-100">Verify</button>
-                    </form>
-                </div>
-            </div>
-        <?php else: ?>
-            <div class="card">
-                <div class="card-header">
-                    Step 2: Confirm Purchase
-                </div>
-                <div class="card-body">
-                    <div class="alert alert-success" role="alert">
-                        IUC Verified Successfully!
+    <?php if (isset($_SESSION["product_purchase_response"])): ?>
+        <div class="alert alert-info" role="alert">
+            <?php echo $_SESSION["product_purchase_response"]; ?>
+        </div>
+        <?php unset($_SESSION["product_purchase_response"]); ?>
+    <?php endif; ?>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <?php if (!isset($_SESSION["cable_name"])): ?>
+                <div class="card">
+                    <div class="card-header">
+                        Step 1: Verify Decoder IUC
                     </div>
-                    <ul class="list-group mb-3">
-                        <li class="list-group-item d-flex justify-content-between lh-sm">
-                            <div><h6 class="my-0">Customer Name</h6></div>
-                            <span class="text-muted"><?php echo $_SESSION['cable_name']; ?></span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between lh-sm">
-                            <div><h6 class="my-0">IUC Number</h6></div>
-                            <span class="text-muted"><?php echo $_SESSION['iuc_number']; ?></span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between lh-sm">
-                            <div><h6 class="my-0">Provider</h6></div>
-                            <span class="text-muted"><?php echo strtoupper($_SESSION['cable_provider']); ?></span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between lh-sm">
-                            <div><h6 class="my-0">Package</h6></div>
-                            <span class="text-muted"><?php echo ucwords(str_replace("-", " ", $_SESSION['cable_package'])); ?></span>
-                        </li>
-                    </ul>
-                    <form action="cable-logic.php" method="POST" class="d-grid gap-2">
-                        <button type="submit" name="buy-cable" class="btn btn-primary">Buy Now</button>
-                    </form>
-                    <form action="cable.php" method="POST" class="d-grid gap-2 mt-2">
-                         <button type="submit" name="reset-cable" class="btn btn-secondary">Reset</button>
-                    </form>
+                    <div class="card-body">
+                        <form action="cable-logic.php" method="POST">
+                            <div class="mb-3">
+                                <label for="provider" class="form-label">Cable Provider</label>
+                                <select class="form-select" id="provider" name="provider" required>
+                                    <option value="">Select Provider</option>
+                                    <option value="dstv">DSTV</option>
+                                    <option value="gotv">GOTV</option>
+                                    <option value="startimes">Startimes</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="iuc" class="form-label">IUC Number</label>
+                                <input type="text" class="form-control" id="iuc" name="iuc" placeholder="Enter IUC number" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="package" class="form-label">Package</label>
+                                <select class="form-select" id="package" name="package" required>
+                                    <option value="">Select a package</option>
+                                </select>
+                            </div>
+                            <button type="submit" name="verify-cable" class="btn btn-primary w-100">Verify</button>
+                        </form>
+                    </div>
                 </div>
+            <?php else: ?>
+                <div class="card">
+                    <div class="card-header">
+                        Step 2: Confirm Purchase
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-success" role="alert">
+                            IUC Verified Successfully!
+                        </div>
+                        <ul class="list-group mb-3">
+                            <li class="list-group-item d-flex justify-content-between lh-sm">
+                                <div><h6 class="my-0">Customer Name</h6></div>
+                                <span class="text-muted"><?php echo $_SESSION['cable_name']; ?></span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between lh-sm">
+                                <div><h6 class="my-0">IUC Number</h6></div>
+                                <span class="text-muted"><?php echo $_SESSION['iuc_number']; ?></span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between lh-sm">
+                                <div><h6 class="my-0">Provider</h6></div>
+                                <span class="text-muted"><?php echo strtoupper($_SESSION['cable_provider']); ?></span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between lh-sm">
+                                <div><h6 class="my-0">Package</h6></div>
+                                <span class="text-muted"><?php echo ucwords(str_replace("-", " ", $_SESSION['cable_package'])); ?></span>
+                            </li>
+                        </ul>
+                        <form action="cable-logic.php" method="POST" class="d-grid gap-2">
+                            <button type="submit" name="buy-cable" class="btn btn-primary">Buy Now</button>
+                        </form>
+                        <form action="cable.php" method="POST" class="d-grid gap-2 mt-2">
+                             <button type="submit" name="reset-cable" class="btn btn-secondary">Reset</button>
+                        </form>
+                    </div>
+                </div>
+            <?php endif; ?>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    Recent Cable TV Purchases
+                </div>
+                <ul class="list-group list-group-flush">
+                   <?php
+                        $get_recent_cable = mysqli_query($connection_server, "SELECT * FROM sas_transactions WHERE username='".$get_logged_user_details["username"]."' AND type_alternative LIKE '%cable%' ORDER BY id DESC LIMIT 5");
+                        while($transaction = mysqli_fetch_assoc($get_recent_cable)){
+                            echo '<li class="list-group-item">';
+                            echo '<div class="d-flex justify-content-between">';
+                            echo '<span>'.strtoupper($transaction['type_alternative']).' ('.$transaction['type'].')</span>';
+                            echo '<span class="text-danger">-₦'.toDecimal($transaction['amount'], 2).'</span>';
+                            echo '</div>';
+                            echo '<small class="text-muted">'.formDate($transaction['date']).'</small>';
+                            echo '</li>';
+                        }
+                    ?>
+                </ul>
             </div>
-        <?php endif; ?>
-    </div>
-    <div class="col-lg-6">
-        <div class="card">
-            <div class="card-header">
-                Recent Cable TV Purchases
-            </div>
-            <ul class="list-group list-group-flush">
-               <?php
-                    $get_recent_cable = mysqli_query($connection_server, "SELECT * FROM sas_transactions WHERE username='".$get_logged_user_details["username"]."' AND type_alternative LIKE '%cable%' ORDER BY id DESC LIMIT 5");
-                    while($transaction = mysqli_fetch_assoc($get_recent_cable)){
-                        echo '<li class="list-group-item">';
-                        echo '<div class="d-flex justify-content-between">';
-                        echo '<span>'.strtoupper($transaction['type_alternative']).' ('.$transaction['type'].')</span>';
-                        echo '<span class="text-danger">-₦'.toDecimal($transaction['amount'], 2).'</span>';
-                        echo '</div>';
-                        echo '<small class="text-muted">'.formDate($transaction['date']).'</small>';
-                        echo '</li>';
-                    }
-                ?>
-            </ul>
         </div>
     </div>
-</div>
 
-<script>
-    const allCablePlans = <?php echo json_encode($all_cable_plans); ?>;
-    const providerSelect = document.getElementById('provider');
-    const packageSelect = document.getElementById('package');
+    <script>
+        const allCablePlans = <?php echo json_encode($all_cable_plans); ?>;
+        const providerSelect = document.getElementById('provider');
+        const packageSelect = document.getElementById('package');
 
-    function updateCablePackages() {
-        const selectedProvider = providerSelect.value;
-        const plans = allCablePlans[selectedProvider] || [];
+        function updateCablePackages() {
+            const selectedProvider = providerSelect.value;
+            const plans = allCablePlans[selectedProvider] || [];
 
-        packageSelect.innerHTML = '<option value="">Select a package</option>';
-        if (plans.length > 0) {
-            plans.forEach(plan => {
-                const option = document.createElement('option');
-                option.value = plan.value;
-                option.textContent = plan.text;
-                packageSelect.appendChild(option);
-            });
+            packageSelect.innerHTML = '<option value="">Select a package</option>';
+            if (plans.length > 0) {
+                plans.forEach(plan => {
+                    const option = document.createElement('option');
+                    option.value = plan.value;
+                    option.textContent = plan.text;
+                    packageSelect.appendChild(option);
+                });
+            }
         }
-    }
 
-    providerSelect.addEventListener('change', updateCablePackages);
-</script>
+        providerSelect.addEventListener('change', updateCablePackages);
+    </script>
 
-<?php include 'footer.php'; ?>
+    <?php include 'footer.php'; ?>
+</body>
+</html>

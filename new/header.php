@@ -1,13 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="style.css" rel="stylesheet">
-</head>
-<body>
 <header class="navbar navbar-light sticky-top bg-white flex-md-nowrap p-0 shadow-sm">
     <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">
         <img src="/assets-2/img/logo.png" alt="Logo" width="30" height="30" class="d-inline-block align-text-top">
